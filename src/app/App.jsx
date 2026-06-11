@@ -1,5 +1,7 @@
 import './App.css'
 import { RouterProvider } from 'react-router'
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 import { routes } from './app.routes.jsx'
 import { useSelector } from 'react-redux'
@@ -20,6 +22,18 @@ function App() {
   return (
     <>
       <RouterProvider router={routes} />
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
     </>
   )
 }

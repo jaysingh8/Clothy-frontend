@@ -46,25 +46,21 @@ export const useAuth = () => {
             dispatch(setLoading(false))
         }
     }
- async function handleGetMe() {
-    try {
-        dispatch(setLoading(true));
+    async function handleGetMe() {
+        try {
+            dispatch(setLoading(true))
+            const data = await getMe()
+            dispatch(setUser(data.user))
+        } catch (error) {
+                console.log(error);
+                
+        }
 
-        const data = await getMe();
+        finally {
 
-        console.log("GET ME SUCCESS:", data);
-
-        dispatch(setUser(data.user));
-    } catch (error) {
-        console.log(
-            "GET ME ERROR:",
-            error?.response?.status,
-            error?.response?.data
-        );
-    } finally {
-        dispatch(setLoading(false));
+            dispatch(setLoading(false))
+        }
     }
-}
 
     return { handleRegister, handleLogin, handleGetMe }
 }

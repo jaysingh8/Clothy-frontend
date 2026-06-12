@@ -35,27 +35,27 @@ export const routes = createBrowserRouter([
         children: [
             {
                 path: "/",
-                element: <LazyLoad><Home role='buyer' /></LazyLoad>
+                element: <LazyLoad><Home /></LazyLoad>
             },
             {
                 path: "/products",
-                element: <LazyLoad><Products role='buyer' /></LazyLoad>
+                element: <LazyLoad><Products /></LazyLoad>
             },
             {
                 path: "/category/:category",
-                element: <LazyLoad><CategoryProducts role='buyer' /></LazyLoad>
+                element: <LazyLoad><CategoryProducts  /></LazyLoad>
             },
             {
                 path: "/product/:productId",
-                element: <LazyLoad><ProductDetailed role='buyer' /></LazyLoad>
+                element: <LazyLoad><ProductDetailed /></LazyLoad>
             },
             {
                 path: "/wishlist",
-                element: <LazyLoad><Protected role='buyer'><Wishlist /></Protected></LazyLoad>
+                element: <LazyLoad><Protected ><Wishlist /></Protected></LazyLoad>
             },
             {
                 path: "/cart",
-                element: <LazyLoad><Protected role='buyer'><Cart /></Protected></LazyLoad>
+                element: <LazyLoad><Protected ><Cart /></Protected></LazyLoad>
             },
             {
                 path: "/seller",

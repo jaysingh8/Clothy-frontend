@@ -10,17 +10,18 @@ import { useEffect } from 'react'
 
 function App() {
 
-  const{ handleGetMe } = useAuth()
+  const { handleGetMe } = useAuth()
 
   const user = useSelector(state => state.auth.user)
   console.log(user);
+  useEffect(() => {
+    console.log("APP MOUNTED");
 
-  useEffect(()=>{
-    handleGetMe()
-  },[])
-  
+    handleGetMe();
+  }, []);
+
   return (
-    <> 
+    <>
       <RouterProvider router={routes} />
       <ToastContainer
         position="top-right"

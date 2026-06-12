@@ -2,7 +2,16 @@ import axios from 'axios'
 
 const authApiInstance = axios.create({
     baseURL: `https://clothy-backend-djl7.onrender.com/api/auth`,
-    withCredentials: true  // ✅ fixed: was "defaultwithCredentials" which axios ignores
+    withCredentials: true
+})
+
+// Attach token from localStorage to every request automatically
+authApiInstance.interceptors.request.use((config) => {
+    const token = localStorage.getItem("token")
+    if (token) {
+        config.headers.Authorization = `Bearer ${token}`
+    }
+    return config
 })
 
 export async function register({ email, password, contact, fullname, isSeller }) {

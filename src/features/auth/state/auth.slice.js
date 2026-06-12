@@ -1,10 +1,10 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit"
 
 const authSlice = createSlice({
     name: "auth",
     initialState: {
         user: null,
-        loading: true,  // true so App.jsx shows spinner until getMe resolves on first load
+        loading: true,  // true on first load so App.jsx waits for getMe
         error: null
     },
     reducers: {
@@ -26,5 +26,4 @@ const authSlice = createSlice({
 })
 
 export const { setError, setLoading, setUser, logout } = authSlice.actions
-
 export default authSlice.reducer

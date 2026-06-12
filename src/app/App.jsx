@@ -8,40 +8,45 @@ import { useAuth } from '../features/auth/hook/useAuth.js'
 import { useEffect } from 'react'
 
 function App() {
-  const { handleGetMe } = useAuth()
-  const { loading } = useSelector(state => state.auth)
+    const { handleGetMe } = useAuth()
+    const { loading } = useSelector(state => state.auth)
 
-  useEffect(() => {
-    handleGetMe()
-  }, [])
+    useEffect(() => {
+        handleGetMe()
+    }, [])
 
-  // Wait for getMe to resolve before rendering routes
-  // This prevents protected routes from redirecting before the cookie is checked
-  if (loading) {
+    // Wait for getMe to finish before rendering routes
+    // Prevents protected routes from redirecting before auth state is known
+    if (loading) {
+        return (
+            <div style={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                height: '100vh'
+            }}>
+                <p>Loading...</p>
+            </div>
+        )
+    }
+
     return (
-      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
-        <p>Loading...</p>
-      </div>
+        <>
+            <RouterProvider router={routes} />
+            <ToastContainer
+                position="top-right"
+                autoClose={3000}
+                hideProgressBar={false}
+                newestOnTop
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="light"
+            />
+        </>
     )
-  }
-
-  return (
-    <>
-      <RouterProvider router={routes} />
-      <ToastContainer
-        position="top-right"
-        autoClose={3000}
-        hideProgressBar={false}
-        newestOnTop
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="light"
-      />
-    </>
-  )
 }
 
 export default App

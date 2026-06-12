@@ -17,7 +17,7 @@ function App() {
   useEffect(() => {
     console.log("APP MOUNTED");
 
-    handleGetMe();
+    await handleGetMe();
   }, []);
 
   return (

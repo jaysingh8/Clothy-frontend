@@ -12,11 +12,19 @@ function App() {
     const { loading } = useSelector(state => state.auth)
 
     useEffect(() => {
+        // When Google OAuth redirects back, it adds ?token= to the URL
+        // Save it to localStorage so all future requests include it
+        const params = new URLSearchParams(window.location.search)
+        const googleToken = params.get("token")
+        if (googleToken) {
+            localStorage.setItem("token", googleToken)
+            // Clean the token out of the URL
+            window.history.replaceState({}, "", "/")
+        }
+
         handleGetMe()
     }, [])
 
-    // Wait for getMe to finish before rendering routes
-    // Prevents protected routes from redirecting before auth state is known
     if (loading) {
         return (
             <div style={{

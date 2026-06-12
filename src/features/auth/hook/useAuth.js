@@ -52,7 +52,7 @@ export const useAuth = () => {
             const data = await getMe()
             dispatch(setUser(data.user))
         } catch (error) {
-                console.log(error);
+                console.log("getMe failed:", error.response?.data || error.message)
                 
         }
 

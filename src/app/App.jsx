@@ -15,10 +15,9 @@ function App() {
   const user = useSelector(state => state.auth.user)
   console.log(user);
  useEffect(() => {
-  (async () => {
-    console.log("APP MOUNTED");
-    await handleGetMe();
-  })();
+  
+   handleGetMe();
+
 }, []);
 
   return (

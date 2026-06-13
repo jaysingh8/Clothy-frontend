@@ -147,8 +147,7 @@ const getDisplayImage = (product, variant) => {
   return null
 }
 
-// ── Compute cart totals from items ────────────────────────────────────────────
-// cart.totalPrice is NOT stored in the schema, so we derive it here.
+// ── Compute cart totals from items (fallback if backend total is unavailable) ─
 const computeCartTotals = (items = []) => {
   const currency = items[0]?.price?.currency ?? 'INR'
   const total = items.reduce((sum, item) => {
@@ -217,8 +216,11 @@ const Cart = () => {
     setQuantities(prev => ({ ...prev, [id]: Math.max(1, (prev[id] ?? 1) + delta) }))
   }
 
-  // ── Derive totals from items (totalPrice is not in the schema) ──
-  const { total: computedTotal, currency: totalCurrency } = computeCartTotals(cart?.items)
+  // ── Use backend-computed totals, fallback to client-side calculation ──
+  const { total: computedTotal, currency: totalCurrency } = 
+    cart.totalPrice != null && cart.totalPrice > 0
+      ? { total: cart.totalPrice, currency: cart.currency }
+      : computeCartTotals(cart?.items)
 
   if (!cart?.items?.length) return <EmptyCart navigate={navigate} />
 

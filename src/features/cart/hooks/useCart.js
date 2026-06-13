@@ -20,7 +20,7 @@ export const useCart = () => {
     async function handleGetCart() {
         try {
             const data = await getCart()
-            dispatch(setItems(data.cart.items))
+            dispatch(setItems(data.cart))
         } catch (error) {
             toast.error(error.response?.data?.message || "Failed to load cart")
         }

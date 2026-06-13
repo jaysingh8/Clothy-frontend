@@ -5,6 +5,16 @@ const wishlistApiInstance = axios.create({
     withCredentials: true
 })
 
+
+
+authApiInstance.interceptors.request.use((config) => {
+    const token = localStorage.getItem("token")
+    if (token) {
+        config.headers.Authorization = `Bearer ${token}`
+    }
+    return config
+})
+
 export const getWishlist = async () => {
     const response = await wishlistApiInstance.get("/")
     return response.data

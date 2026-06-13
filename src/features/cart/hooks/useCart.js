@@ -1,6 +1,6 @@
-import { addItem, getCart , increamentCartItemApi , decreamentCartItemApi, removeCartItemApi } from "../service/cart.api"
+import { addItem, getCart, increamentCartItemApi, decreamentCartItemApi, removeCartItemApi, createOrderApi, verifyOrderApi } from "../service/cart.api"
 import { useDispatch } from "react-redux"
-import { addItem as addItemToCart, setItems , increamentCartItem , decreamentCartItem, removeCartItem } from "../state/cart.slice"
+import { addItem as addItemToCart, setItems, increamentCartItem, decreamentCartItem, removeCartItem } from "../state/cart.slice"
 import { toast } from "react-toastify"
 
 export const useCart = () => {
@@ -45,6 +45,7 @@ export const useCart = () => {
             toast.error(error.response?.data?.message || "Failed to update quantity")
         }
     }
+
     async function handleRemoveCartItem({ productId, variantId }) {
         try {
             const data = await removeCartItemApi({ productId, variantId })
@@ -55,12 +56,55 @@ export const useCart = () => {
         }
     }
 
+    async function handleCheckout() {
+        try {
+            // 1. Create Razorpay order on backend
+            const { order } = await createOrderApi()
+
+            // 2. Configure Razorpay checkout
+            const options = {
+                key: import.meta.env.VITE_RAZORPAY_KEY_ID,
+                amount: order.amount,
+                currency: order.currency,
+                name: "Clothy",
+                description: "Premium Fashion",
+                order_id: order.id,
+                handler: async function (response) {
+                    // 3. Verify payment on backend
+                    const result = await verifyOrderApi({
+                        razorpay_order_id: response.razorpay_order_id,
+                        razorpay_payment_id: response.razorpay_payment_id,
+                        razorpay_signature: response.razorpay_signature
+                    })
+
+                    if (result.success) {
+                        toast.success("Payment successful! 🎉")
+                        // Refresh cart after successful payment
+                        dispatch(setItems({ items: [], totalPrice: 0, currency: "INR" }))
+                    }
+                },
+                prefill: {
+                    contact: '',
+                    email: ''
+                },
+                theme: {
+                    color: "#b8973a"
+                }
+            }
+
+            const razorpay = new window.Razorpay(options)
+            razorpay.open()
+        } catch (error) {
+            toast.error(error.response?.data?.message || "Failed to initiate payment")
+        }
+    }
+
     return {
         handleAddItem,
         handleGetCart,
         handleIncreamentCartItem,
         handleDecreamentCartItem,
-        handleRemoveCartItem
+        handleRemoveCartItem,
+        handleCheckout
     }
 }
-

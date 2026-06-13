@@ -500,9 +500,7 @@ const ProductDetail = () => {
                   <button className="cta-primary" disabled={!inStock} onClick={handleAddToCart}>
                     <CartIcon /> Add to Cart
                   </button>
-                  <button className="cta-outline" disabled={!inStock} onClick={handleBuyNow}>
-                    <BoltIcon /> Buy Now
-                  </button>
+                  
                 </div>
 
                 {/* Taglines */}

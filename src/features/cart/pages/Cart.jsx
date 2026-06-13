@@ -205,7 +205,7 @@ const EmptyCart = ({ navigate }) => (
 // ── Main Cart ─────────────────────────────────────────────────────────────────
 const Cart = () => {
   const cart     = useSelector(state => state.cart)
-  const { handleGetCart , handleIncreamentCartItem , handleDecreamentCartItem , handleRemoveCartItem} = useCart()
+  const { handleGetCart , handleIncreamentCartItem , handleDecreamentCartItem , handleRemoveCartItem, handleCheckout } = useCart()
   const navigate = useNavigate()
 
   const [quantities, setQuantities] = useState({})
@@ -382,6 +382,9 @@ const Cart = () => {
                 </div>
 
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+                  <button className="cta-dark" onClick={handleCheckout}>
+                    Checkout — {formatINR(computedTotal, totalCurrency)}
+                  </button>
                   <button className="cta-outline" onClick={() => navigate('/')}>
                     Continue Shopping
                   </button>
